@@ -74,10 +74,20 @@ export default function FruitsList() {
     // Funzione API
 
     function fetchPizzas() {
+
         axios.get("http://localhost:3000/route")
+
             .then((res) =>
+
                 setFruitPosts(res.data)
+
             )
+            .catch(function (error) {
+
+                console.log(error);
+
+            })
+
     }
 
 
