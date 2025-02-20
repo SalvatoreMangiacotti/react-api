@@ -73,7 +73,7 @@ export default function FruitsList() {
 
     // Funzione API
 
-    function fetchPizzas() {
+    function fetchPosts() {
 
         axios.get("http://localhost:3000/route")
 
@@ -103,7 +103,7 @@ export default function FruitsList() {
 
     }
 
-    useEffect(fetchPizzas, [])
+    useEffect(fetchPosts, [])
 
 
     // Funzione del Submit
@@ -146,7 +146,7 @@ export default function FruitsList() {
 
             <h3>Form section</h3>
 
-            <button onClick={fetchPizzas}>Carica Pizza</button>
+            <button onClick={fetchPosts}>Carica Pizza</button>
 
             <form className="posts-form" onSubmit={handleSubmit}>
 
