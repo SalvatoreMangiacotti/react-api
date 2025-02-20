@@ -1,49 +1,50 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const mediterraneanFruits = [
-    {
-        id: 1,
-        titolo: "Arance",
-        autore: "Autore 1",
-        contenuto: "Ricche di vitamina C.",
-        categoria: "Agrumi"
-    },
-    {
-        id: 2,
-        titolo: "Limoni",
-        autore: "Autore 2",
-        contenuto: "Ottimi per il succo.",
-        categoria: "Agrumi"
-    },
-    {
-        id: 3,
-        titolo: "Mandarini",
-        autore: "Autore 3",
-        contenuto: "Dolci e succosi.",
-        categoria: "Agrumi"
-    },
-    {
-        id: 4,
-        titolo: "Fichi",
-        autore: "Autore 4",
-        contenuto: "Deliziosi freschi o secchi.",
-        categoria: "Frutta"
-    },
-    {
-        id: 5,
-        titolo: "Albicocche",
-        autore: "Autore 5",
-        contenuto: "Perfette per le marmellate.",
-        categoria: "Frutta"
-    },
-    {
-        id: 6,
-        titolo: "Pesche",
-        autore: "Autore 6",
-        contenuto: "Succhino rinfrescante.",
-        categoria: "Frutta"
-    }
-];
+// const mediterraneanFruits = [
+//     {
+//         id: 1,
+//         titolo: "Arance",
+//         autore: "Autore 1",
+//         contenuto: "Ricche di vitamina C.",
+//         categoria: "Agrumi"
+//     },
+//     {
+//         id: 2,
+//         titolo: "Limoni",
+//         autore: "Autore 2",
+//         contenuto: "Ottimi per il succo.",
+//         categoria: "Agrumi"
+//     },
+//     {
+//         id: 3,
+//         titolo: "Mandarini",
+//         autore: "Autore 3",
+//         contenuto: "Dolci e succosi.",
+//         categoria: "Agrumi"
+//     },
+//     {
+//         id: 4,
+//         titolo: "Fichi",
+//         autore: "Autore 4",
+//         contenuto: "Deliziosi freschi o secchi.",
+//         categoria: "Frutta"
+//     },
+//     {
+//         id: 5,
+//         titolo: "Albicocche",
+//         autore: "Autore 5",
+//         contenuto: "Perfette per le marmellate.",
+//         categoria: "Frutta"
+//     },
+//     {
+//         id: 6,
+//         titolo: "Pesche",
+//         autore: "Autore 6",
+//         contenuto: "Succhino rinfrescante.",
+//         categoria: "Frutta"
+//     }
+// ];
 
 
 
@@ -60,13 +61,24 @@ export default function FruitsList() {
 
     // State dei Post
 
-    const [fruitPosts, setFruitPosts] = useState(mediterraneanFruits)
+    const [fruitPosts, setFruitPosts] = useState([])
 
 
 
     // State del Form
 
     const [formData, setFormData] = useState(initialFormData)
+
+
+
+    // Funzione API
+
+    function fetchPizzas() {
+        axios.get("http://localhost:3000/route")
+            .then((res) =>
+                setFruitPosts(res.data)
+            )
+    }
 
 
 
@@ -81,6 +93,7 @@ export default function FruitsList() {
 
     }
 
+    useEffect(fetchPizzas, [])
 
 
     // Funzione del Submit
@@ -97,6 +110,7 @@ export default function FruitsList() {
 
         setFormData(initialFormData)
     }
+
 
 
 
@@ -121,6 +135,8 @@ export default function FruitsList() {
             {/* Form */}
 
             <h3>Form section</h3>
+
+            <button onClick={fetchPizzas}>Carica Pizza</button>
 
             <form className="posts-form" onSubmit={handleSubmit}>
 
@@ -192,10 +208,18 @@ export default function FruitsList() {
 
                         <li key={fruit.id}>
 
-                            <h2>{fruit.titolo}</h2>
+                            {/* API Properties */}
+
+                            <h2>{fruit.title}</h2>
+                            <h3>{fruit.slug}</h3>
+                            <p>{fruit.content}</p>
+                            <img src={fruit.image} />
+                            <span>{fruit.tags}</span>
+
+                            {/* <h2>{fruit.titolo}</h2>
                             <h3>{fruit.autore}</h3>
                             <p>{fruit.contenuto}</p>
-                            <span>{fruit.categoria}</span>
+                            <span>{fruit.categoria}</span> */}
 
 
                             {/* Bottone di rimozione del post */}
