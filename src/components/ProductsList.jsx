@@ -103,6 +103,8 @@ export default function FruitsList() {
 
     }
 
+    // Caricamento ad inizio pagina
+
     useEffect(fetchPosts, [])
 
 
