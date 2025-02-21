@@ -49,10 +49,10 @@ import axios from 'axios';
 
 
 const initialFormData = {
-    titolo: "",
-    autore: "",
-    contenuto: "",
-    categoria: ""
+    title: "",
+    content: "",
+    image: "",
+    tags: []
 }
 
 
@@ -92,20 +92,25 @@ export default function FruitsList() {
 
 
 
+    // Caricamento ad inizio pagina
+
+    useEffect(fetchPosts, [])
+
+
+
     // Funzione del contenuto del Form
 
     function handleFormData(e) {
 
+        const value = e.target.name === "tags" ? e.target.value.split(",") : e.target.value;
+
         setFormData((currentFormData) => ({
             ...currentFormData,
-            [e.target.name]: e.target.value
+            [e.target.name]: value
         }))
 
     }
 
-    // Caricamento ad inizio pagina
-
-    useEffect(fetchPosts, [])
 
 
     // Funzione del Submit
@@ -113,6 +118,13 @@ export default function FruitsList() {
     function handleSubmit(e) {
 
         e.preventDefault();
+
+        axios.post("http://localhost:3000/route", formData)
+
+            .then(res => {
+                console.log(res.data)
+            })
+
         setFruitPosts((currentFruitsPosts) => [...currentFruitsPosts,
         {
             id:
@@ -134,8 +146,12 @@ export default function FruitsList() {
             return post.id !== id;
         });
 
-        setFruitPosts(updatedPosts);
-
+        axios.delete(`http://localhost:3000/route/${id}`)
+            .then(res =>
+                console.log(res),
+                setFruitPosts(updatedPosts)
+            )
+            .catch(err => console.log(err))
     }
 
 
@@ -156,21 +172,10 @@ export default function FruitsList() {
 
                 <input
                     type="text"
-                    name="titolo"
+                    name="title"
                     onChange={handleFormData}
-                    value={formData.titolo}
+                    value={formData.title}
                     placeholder='Nome del post'
-                />
-
-
-                {/* Autore */}
-
-                <input
-                    type="text"
-                    name="autore"
-                    onChange={handleFormData}
-                    value={formData.autore}
-                    placeholder='Nome Autore'
                 />
 
 
@@ -178,9 +183,9 @@ export default function FruitsList() {
 
                 <textarea
                     type="text"
-                    name="contenuto"
+                    name="content"
                     onChange={handleFormData}
-                    value={formData.contenuto}
+                    value={formData.content}
                     placeholder='Contenuto del post'
                 >
 
@@ -191,13 +196,24 @@ export default function FruitsList() {
                 </textarea>
 
 
+                {/* Immagine */}
+
+                <input
+                    type="text"
+                    name="image"
+                    onChange={handleFormData}
+                    value={formData.image}
+                    placeholder='Imagine pizza'
+                />
+
+
                 {/* Categoria */}
 
                 <input
                     type="text"
-                    name="categoria"
+                    name="tags"
                     onChange={handleFormData}
-                    value={formData.categoria}
+                    value={formData.tags}
                     placeholder='Categoria del post'
                 />
 
@@ -223,10 +239,9 @@ export default function FruitsList() {
                             {/* API Properties */}
 
                             <h2>{fruit.title}</h2>
-                            <h3>{fruit.slug}</h3>
                             <p>{fruit.content}</p>
                             <img src={fruit.image} />
-                            <span>{fruit.tags}</span>
+                            <p>{fruit.tags ? fruit.tags.join(", ") : "No tags available"}</p>
 
                             {/* <h2>{fruit.titolo}</h2>
                             <h3>{fruit.autore}</h3>
